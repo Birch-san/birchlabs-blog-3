@@ -1,25 +1,17 @@
-const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-
-module.exports = {
-
-  entry: {
-    'main': './index.js'
-  },
-
-  output: {
-    filename: 'index.js',
-    path: 'dist',
-    /* IMPORTANT!
-     * You must compile to UMD or CommonJS
-     * so it can be required in a Node context: */
-    libraryTarget: 'umd'
-  },
-
-  plugins: [
-    new StaticSiteGeneratorPlugin({
-      entry: 'main',
-      crawl: true
-    })
-  ]
-
-};
+/**
+ * @author: @AngularClass
+ */
+switch (process.env.NODE_ENV) {
+  case 'prod':
+  case 'production':
+    module.exports = require('./config/webpack.prod')({env: 'production'});
+    break;
+  case 'test':
+  case 'testing':
+    module.exports = require('./config/webpack.test')({env: 'test'});
+    break;
+  case 'dev':
+  case 'development':
+  default:
+    module.exports = require('./config/webpack.dev')({env: 'development'});
+}
